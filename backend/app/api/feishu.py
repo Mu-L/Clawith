@@ -429,6 +429,7 @@ async def _handle_feishu_file(db, agent_id, config, message, sender_open_id, cha
     """Handle incoming file or image messages from Feishu (runs as a background task)."""
     import asyncio, random, json
     from pathlib import Path
+    from app.config import get_settings
     from app.models.audit import ChatMessage
     from app.models.agent import Agent as AgentModel
     from app.models.user import User as UserModel
