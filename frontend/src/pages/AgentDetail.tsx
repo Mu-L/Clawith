@@ -2764,11 +2764,33 @@ function AgentDetailInner() {
                                                                     </div>
                                                                 </details>
                                                             )}
-                                                            {msg.role === 'assistant' ? <MarkdownRenderer content={msg.content} /> : msg.content ? <div style={{ whiteSpace: 'pre-wrap' }}>{msg.content}</div> : null}
+                                                            {msg.role === 'assistant' ? (
+                                                                (msg as any)._streaming && !msg.content ? (
+                                                                    <div className="thinking-indicator">
+                                                                        <div className="thinking-dots">
+                                                                            <span /><span /><span />
+                                                                        </div>
+                                                                        <span style={{ color: 'var(--text-tertiary)', fontSize: '13px' }}>{t('agent.chat.thinking', 'Thinking...')}</span>
+                                                                    </div>
+                                                                ) : <MarkdownRenderer content={msg.content} />
+                                                            ) : msg.content ? <div style={{ whiteSpace: 'pre-wrap' }}>{msg.content}</div> : null}
                                                         </div>
                                                     </div>
                                                 );
                                             })}
+                                            {chatMessages.length > 0 && chatMessages[chatMessages.length - 1].role === 'user' && wsConnected && (
+                                                <div style={{ display: 'flex', gap: '10px', padding: '12px 0', animation: 'fadeIn .2s ease' }}>
+                                                    <div className="chat-avatar" style={{ color: 'var(--text-tertiary)' }}>{Icons.bot}</div>
+                                                    <div className="chat-bubble" style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-lg)', padding: '10px 14px' }}>
+                                                        <div className="thinking-indicator">
+                                                            <div className="thinking-dots">
+                                                                <span /><span /><span />
+                                                            </div>
+                                                            <span style={{ color: 'var(--text-tertiary)', fontSize: '13px' }}>{t('agent.chat.thinking', 'Thinking...')}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
                                             <div ref={chatEndRef} />
                                         </div>
                                         {showScrollBtn && (
